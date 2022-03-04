@@ -6,11 +6,12 @@ def main():
     brake_actuator = ctre.TalonSRX(3)
     left_falcon = ctre.TalonFX(1)
     right_falcon = ctre.TalonFX(2)
+    right_falcon.setInverted(True)
 
     brake_actuator.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0)
 
     while True:
-        pot_pos = brake_actuator.getSelectedSensorPosition()
+        pot_pos = brake_actuator.getSelectedSensorPosition(0)
         if pot_pos > 10:
             left_falcon.set(ctre.TalonFXControlMode.PercentOutput, pot_pos/pot_range)
             right_falcon.set(ctre.TalonFXControlMode.PercentOutput, pot_pos/pot_range)
