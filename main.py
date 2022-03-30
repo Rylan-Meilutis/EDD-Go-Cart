@@ -1,6 +1,4 @@
 from typing import *
-import cv2
-import numpy as np
 import drivetrain
 import buttons as bs
 import cruise_control as cc
