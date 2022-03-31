@@ -1,7 +1,8 @@
 from typing import *
+
+import gpiozero as gpio
 from ctre import *
 from rev import *
-import gpiozero as gpio
 
 
 class drivetrain:
@@ -33,14 +34,14 @@ class drivetrain:
         self.falcon4.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
         self.falcon5.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
         self.falcon6.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
-        
+
         brake_pid.setP(brake_kp)
         brake_pid.setI(brake_ki)
         brake_pid.setD(brake_kd)
         brake_pid.setFF(brake_kf)
         brake_pid.setIZone(brake_kiz)
         brake_pid.setIMaxAccum(brake_kim)
-    
+
     def drive(self, speed: float) -> NoReturn:
         control_mode = TalonFXControlMode.PercentOutput
         self.falcon1.set(control_mode, speed)
@@ -49,7 +50,7 @@ class drivetrain:
         self.falcon4.set(control_mode, speed)
         self.falcon5.set(control_mode, speed)
         self.falcon6.set(control_mode, speed)
-    
+
     def stop_motors(self) -> NoReturn:
         control_mode = TalonFXControlMode.PercentOutput
         self.falcon1.set(control_mode, 0)
@@ -58,7 +59,7 @@ class drivetrain:
         self.falcon4.set(control_mode, 0)
         self.falcon5.set(control_mode, 0)
         self.falcon6.set(control_mode, 0)
-    
+
     def get_speed(self) -> float:
         return ((self.falcon1.getSelectedSensorVelocity() * 10 / 2048 * 60) * 8 / 1056) + \
                ((self.falcon2.getSelectedSensorVelocity() * 10 / 2048 * 60) * 8 / 1056) + \
@@ -66,7 +67,7 @@ class drivetrain:
                ((self.falcon4.getSelectedSensorVelocity() * 10 / 2048 * 60) * 8 / 1056) + \
                ((self.falcon5.getSelectedSensorVelocity() * 10 / 2048 * 60) * 8 / 1056) + \
                ((self.falcon6.getSelectedSensorVelocity() * 10 / 2048 * 60) * 8 / 1056) / 6
-    
+
     def get_cruise_speed(self) -> float:
         return (self.falcon1.getSelectedSensorVelocity() +
                 self.falcon2.getSelectedSensorVelocity() +
@@ -89,5 +90,3 @@ class drivetrain:
 
         pos = power * 42
         self.brake_pid.setReference(pos, CANSparkMaxLowLevel.ControlType.kPosition)
-
-
