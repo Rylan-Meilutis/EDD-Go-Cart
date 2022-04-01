@@ -1,4 +1,4 @@
-from typing import *
+from typing import NoReturn
 
 import buttons as bs
 import cruise_control as cc

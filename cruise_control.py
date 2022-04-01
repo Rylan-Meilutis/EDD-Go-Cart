@@ -1,4 +1,4 @@
-from typing import *
+from typing import NoReturn
 
 import simple_pid as pid
 

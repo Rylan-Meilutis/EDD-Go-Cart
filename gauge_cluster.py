@@ -1,4 +1,4 @@
-from typing import *
+from typing import NoReturn
 
 import cv2
 import numpy as np

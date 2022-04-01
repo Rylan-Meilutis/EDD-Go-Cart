@@ -1,8 +1,8 @@
 from typing import *
 
 import gpiozero as gpio
-from ctre import *
-from rev import *
+import ctre
+import rev
 
 
 class drivetrain:
@@ -10,13 +10,13 @@ class drivetrain:
 
     def __init__(self) -> NoReturn:
         self.brake_light_dev = gpio.LED(2)
-        self.falcon1 = TalonFX(1)
-        self.falcon2 = TalonFX(2)
-        self.falcon3 = TalonFX(3)
-        self.falcon4 = TalonFX(4)
-        self.falcon5 = TalonFX(5)
-        self.falcon6 = TalonFX(6)
-        self.brake_actuator = CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless)
+        self.falcon1 = ctre.TalonFX(1)
+        self.falcon2 = ctre.TalonFX(2)
+        self.falcon3 = ctre.TalonFX(3)
+        self.falcon4 = ctre.TalonFX(4)
+        self.falcon5 = ctre.TalonFX(5)
+        self.falcon6 = ctre.TalonFX(6)
+        self.brake_actuator = rev.CANSparkMax(3, rev.CANSparkMaxLowLevel.MotorType.kBrushless)
         self.brake_pid = self.brake_actuator.getPIDController()
 
     def config(self) -> NoReturn:
@@ -28,12 +28,12 @@ class drivetrain:
         brake_kiz = 0.0
         brake_kim = 0.0
 
-        self.falcon1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
-        self.falcon2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
-        self.falcon3.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
-        self.falcon4.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
-        self.falcon5.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
-        self.falcon6.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor)
+        self.falcon1.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor)
+        self.falcon2.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor)
+        self.falcon3.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor)
+        self.falcon4.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor)
+        self.falcon5.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor)
+        self.falcon6.configSelectedFeedbackSensor(ctre.FeedbackDevice.IntegratedSensor)
 
         brake_pid.setP(brake_kp)
         brake_pid.setI(brake_ki)
@@ -43,7 +43,7 @@ class drivetrain:
         brake_pid.setIMaxAccum(brake_kim)
 
     def drive(self, speed: float) -> NoReturn:
-        control_mode = TalonFXControlMode.PercentOutput
+        control_mode = ctre.TalonFXControlMode.PercentOutput
         self.falcon1.set(control_mode, speed)
         self.falcon2.set(control_mode, speed)
         self.falcon3.set(control_mode, speed)
@@ -52,7 +52,7 @@ class drivetrain:
         self.falcon6.set(control_mode, speed)
 
     def stop_motors(self) -> NoReturn:
-        control_mode = TalonFXControlMode.PercentOutput
+        control_mode = ctre.TalonFXControlMode.PercentOutput
         self.falcon1.set(control_mode, 0)
         self.falcon2.set(control_mode, 0)
         self.falcon3.set(control_mode, 0)
@@ -89,4 +89,4 @@ class drivetrain:
             self.brake_light_dev.off()
 
         pos = power * 42
-        self.brake_pid.setReference(pos, CANSparkMaxLowLevel.ControlType.kPosition)
+        self.brake_pid.setReference(pos, rev.CANSparkMaxLowLevel.ControlType.kPosition)
