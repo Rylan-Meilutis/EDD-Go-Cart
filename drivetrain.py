@@ -1,4 +1,4 @@
-from typing import *
+from typing import NoReturn
 
 import gpiozero as gpio
 import ctre
