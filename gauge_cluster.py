@@ -40,6 +40,7 @@ class gauge_cluster:
                         (255, 255, 255), 2, 2)
 
         cv2.imshow("Gauge Cluster", frame)
+        cv2.waitKey(1)
 
     def __add_current_speed(self, frame: np.ndarray) -> np.ndarray:
         """
