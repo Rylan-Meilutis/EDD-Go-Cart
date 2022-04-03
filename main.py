@@ -17,7 +17,7 @@ def main() -> NoReturn:
     cruise_control = cc.cruise(buttons, dt)
     gauge_cluster = gc.gauge_cluster(buttons, dt, cruise_control)
 
-    def drive(accelerator: float, brake:float) -> NoReturn:
+    def drive(accelerator: float, brake: float) -> NoReturn:
         """
         The main __drive function for the go-kart
         """
