@@ -4,6 +4,7 @@ import buttons as bs
 import cruise_control as cc
 import drivetrain
 import gauge_cluster as gc
+import xbox_buttons as xb
 
 
 def main() -> NoReturn:
@@ -12,19 +13,23 @@ def main() -> NoReturn:
     """
     dt = drivetrain.drivetrain()
     buttons = bs.buttons()
+    xb_buttons = xb.xbox_buttons()
     cruise_control = cc.cruise(buttons, dt)
     gauge_cluster = gc.gauge_cluster(buttons, dt, cruise_control)
 
-    def drive() -> NoReturn:
+    def drive(accelerator: float, brake:float) -> NoReturn:
         """
-        The main drive function for the go-kart
+        The main __drive function for the go-kart
         """
-        if buttons.brake_pedal() < -10:
-            dt.brake(buttons.brake_pedal())
+        if brake < -10:
+            dt.brake(brake)
             dt.drive(0)
-        elif buttons.accelerator() > 10:
+        elif accelerator > 10:
             dt.brake(0)
-            dt.drive(buttons.accelerator())
+            dt.drive(accelerator)
+        else:
+            dt.brake(0)
+            dt.drive(0)
 
     while True:
         cruise_display_speed = 0
@@ -36,8 +41,10 @@ def main() -> NoReturn:
                     cruise_speed = dt.get_cruise_speed()
                     cruise_display_speed = dt.get_speed()
                 cruise_control.cruise(cruise_speed)
+            elif xb_buttons.a_btn_toggle():
+                drive(accelerator=xb_buttons.accelerator(), brake=xb_buttons.brake_pedal())
             else:
-                drive()
+                drive(accelerator=buttons.accelerator(), brake=buttons.brake_pedal())
         gauge_cluster.display(cruise_display_speed, cruise_control.cruise_toggle)
 
 
