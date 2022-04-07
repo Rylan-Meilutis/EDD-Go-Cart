@@ -9,7 +9,7 @@ class xbox_buttons:
         """
         Init method for the class
         """
-        thread1 = Thread(target=self.__get_controller_data())
+        thread1 = Thread(target=self.__get_controller_data(), daemon=True)
         self.isControllerConnected = 0
         self.__ly = 0
         self.__rx = 0
